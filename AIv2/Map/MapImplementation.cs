@@ -89,7 +89,7 @@ namespace AIv2 {
 
 		private void MoveElement(Position from, Position to) {
 			map[to.X, to.Y] = map[from.X, from.Y];
-			map[from.X, from.Y] = empty;
+			ClearCell(from);
 		}
 	}
 }

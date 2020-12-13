@@ -16,10 +16,6 @@ namespace AIv2 {
 		}
 
 		public ICommand GetCommand(int commandId) {
-			return GetCommandType(commandId);
-		}
-
-		private ICommand GetCommandType(int commandId) {
 			return commandId switch {
 				int id when MakeStep.IsFitToCommand(id) => commands[typeof(MakeStep)],
 				int id when TakeStuff.IsFitToCommand(id) => commands[typeof(TakeStuff)],
