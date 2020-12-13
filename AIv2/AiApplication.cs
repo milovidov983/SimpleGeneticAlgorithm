@@ -1,4 +1,8 @@
-﻿using System;
+﻿using CsvHelper;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 
 namespace AIv2 {
@@ -7,42 +11,58 @@ namespace AIv2 {
 	public class AiApplication {
 		private const int LOOP_COUNT = 10000;
 
+		public List<Statistics> statistics = new List<Statistics>();
 
 		public void Start() {
 			Bot[] winners = null;
 			int counter = 0;
+			System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+			sw.Start();
 			while (LOOP_COUNT > counter++) {
-				Console.WriteLine("Создание карты..");
 				var map = new MapImplementation();
 				map.CreateAndFillWorldObjects();
 				map.Add(EventController.Instance);
-				Console.WriteLine("Карта инициализирована.");
 
-				Console.WriteLine("Создание фабрики команд..");
 				var commandFactory = new CommandFactory(map);
-				Console.WriteLine("Создание фабрики ботов..");
+			
 				var botFactory = new BotFactory(commandFactory);
-				Console.WriteLine("Создание ботов..");
+
 				Bot[] bots = botFactory.CreateBots(winners);
-				Console.WriteLine("Боты созданы успешно");
 
-				Console.WriteLine("Устанавливаем ботов на карту");
 				map.Add(bots);
-				Console.WriteLine("Боты на карту нанесены");
-
-				Console.WriteLine("Создаем контекст выполнения");
+			
 				var executionContext = new Context(map, bots);
-				Console.WriteLine("Запускаем контекст выполнения");
+
 				executionContext.Run();
 				
 				winners = executionContext.GetWinners();
-				if (counter % 5 == 0) {
+				if (counter % 500 == 0) {
+					sw.Stop();
+
+					Console.WriteLine($"{LOOP_COUNT}/{LOOP_COUNT - counter} iterations...");
 					PrintGenerations(winners);
-					Console.ReadLine();
+					Console.WriteLine($"Elapsed time: {sw.Elapsed.ToString(@"hh\:mm\:ss")}");
+					WriteStatisticToStorage(counter.ToString());
+
+					sw.Restart();
 				}
+				
+				statistics.AddRange(bots.Select(x => new Statistics {
+					Generation = x.Generation,
+					Iteration = counter,
+					StepCount = x.StepCounter
+				}));
 
 				IncrementGeneration(winners);
 				ResetStates(winners);
+			}
+			WriteStatisticToStorage("final");
+		}
+
+		public void WriteStatisticToStorage(string postfix) {
+			using (var writer = new StreamWriter($"output_{postfix}.csv"))
+			using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture)) {
+				csv.WriteRecords(statistics);
 			}
 		}
 
@@ -60,17 +80,22 @@ namespace AIv2 {
 		private void PrintGenerations(Bot[] bots) {
 			var gens = bots
 				.OrderBy(x => x.Generation)
-				.Select(x=> $"[GEN:{x.Generation} GENOME:{x.GenomeId}:  {x.Id}]\n")
+				.Select(x=> $"[ GENERATION: {x.Generation} | GENOME: {x.GenomeCount} | ID: {x.Id} ]\n")
 				.ToArray();
 
 			var genomes = bots
-					.OrderBy(x => x.GenomeId)
-					.Select(x => x.GenomeId)
+					.OrderBy(x => x.GenomeCount)
+					.Select(x => x.GenomeCount)
 					.ToArray();
 
 			Console.WriteLine("---------------------------------------------------------------");
 			Console.WriteLine($"Выжившие поколения:\n {string.Join(" ", gens)}\n");
-			Console.WriteLine($"Выжившие геномы: {string.Join(" ", genomes)}");
 		}
+	}
+
+	public class Statistics {
+		public int StepCount { get; set; }
+		public int Generation { get; set; }
+		public int Iteration { get; set; }
 	}
 }

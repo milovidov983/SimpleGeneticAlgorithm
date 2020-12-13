@@ -5,18 +5,18 @@ namespace AIv2 {
 		private int actionCounter;
 		private int healthScore;
 		private Position position;
+		private Position cursor;
 		private readonly EventController eventController = EventController.Instance;
 		private readonly CommandFactory commandFactory;
 
-		public Guid Id = Guid.NewGuid();
+		public readonly Guid Id = Guid.NewGuid();
 		public Brain Brain { get; private set; }
 		public int Generation { get; set; }
-		public int GenomeId { get; set; } = 1;
+		public int GenomeCount { get; set; } = 1;
 		public int HealthScore {
 			get => healthScore;
 			set {
 				if (healthScore < Settings.BOT_HEALTH_LIMIT) {
-					var id = Id;
 					healthScore = value;
 				}
 				if (healthScore <= 0) {
@@ -38,6 +38,15 @@ namespace AIv2 {
 			}
 		}
 
+		public Position Cursor {
+			get => cursor;
+			set => cursor = value;
+		}
+
+		public int Direction { get; set; }
+
+		public int StepCounter { get; set; } = 0;
+
 		public Bot(Brain brain, CommandFactory commandFactory) {
 			this.Brain = brain;
 			this.commandFactory = commandFactory;
@@ -52,12 +61,13 @@ namespace AIv2 {
 
 
 		private WorldObjectHandleStratagy currentHandleStratagy;
+		private bool logEnabled;
+
 		public void Handle(WorldObject worldObject) {
 			currentHandleStratagy.Handle(worldObject, this);
 		}
 
 		public void Execute() {
-			var id = Id;
 			if (!IsAlive) {
 				return;
 			}
@@ -79,6 +89,12 @@ namespace AIv2 {
 					running = false;
 				}
 				HealthScore--;
+
+				if (logEnabled) {
+					var item = LogItemFactory.CreateFrom(this, currentCommand, commandImplementation.GetType().Name);
+					Logger.Instance.logs.Enqueue(item);
+				}
+				StepCounter++;
 			}
 		}
 
@@ -98,6 +114,11 @@ namespace AIv2 {
 
 		private bool IsFinalCommand(int commandId) {
 			return MakeStep.IsFitToCommand(commandId);
+		}
+
+
+		public void EnableLog() {
+			this.logEnabled = true;
 		}
 
 	}

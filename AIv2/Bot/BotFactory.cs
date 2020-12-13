@@ -24,7 +24,7 @@ namespace AIv2 {
 					var brain = new Brain();
 					brain.Init(parentBot.Brain.Code);
 					var newBot = new Bot(brain, commandFactory);
-					newBot.GenomeId += parentBot.GenomeId + 1;
+					newBot.GenomeCount += parentBot.GenomeCount + 1;
 					return newBot;
 				}).Union(new[] { parentBot }).ToArray();
 

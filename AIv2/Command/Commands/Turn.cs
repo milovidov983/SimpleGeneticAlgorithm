@@ -13,19 +13,7 @@ namespace AIv2 {
 
 		public void Execute(Bot bot) {
 			int currentCommandId = bot.Brain.CurrentCommandId;
-			Position botCurrentPosition = bot.Position;
-			var (x, y) = CommandDirectionIds.IdToCoordinate[currentCommandId - ID_OFFSET];
-			var newPosition = new Position(
-				x: botCurrentPosition.X + x,
-				y: botCurrentPosition.Y + y);
-
-			if (!newPosition.IsValid()) {
-				return;
-			}
-
-			var worldObject = map.Get(newPosition);
-
-			bot.Handle(worldObject);
+			bot.Direction = currentCommandId - ID_OFFSET;
 		}
 
 		public static bool IsFitToCommand(int id) {

@@ -15,5 +15,9 @@
 			=> X < Settings.WORLD_SIZE 
 			&& Y < Settings.WORLD_SIZE
 			&& X > 0 && Y > 0;
+
+		public override string ToString() {
+			return $"x:{X} y:{Y}";
+		}
 	}
 }

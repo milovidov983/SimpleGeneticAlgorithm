@@ -13,10 +13,14 @@ namespace AIv2 {
 			this.bots = bots;
 	
 		}
-
+	
 		public void Run() {
 			int botCount = default;
 			while (isRunning) {
+				var b = bots.FirstOrDefault(x=>x.Generation > 5);
+				if(b != null) {
+					b.EnableLog();
+				}
 				foreach(var bot in bots) {
 					bot.Execute();
 					botCount = bots.Count(x => x.IsAlive);
@@ -25,21 +29,22 @@ namespace AIv2 {
 						break;
 					}
 				}
-				Console.WriteLine("Health:");
-
-				var healtSats = string.Join(" ", bots.Select(x => x.HealthScore));
-				Console.WriteLine(healtSats);
-				
-			}
-			foreach(var bot in bots.Where(x=>x.IsAlive)) {
-				for (int x = 0; x < Settings.CODE_SIZE; x++) {
-					Console.Write($"{bot.Brain.Code[x]}\t ");
-					if((x+1) % 8 == 0) {
-						Console.Write("\n");
-					}
+				if(bots.Where(x=> x.IsAlive).Count() < 16) {
+					map.AddObjects(map.food, 64);
+					map.AddObjects(map.poison, 32);
 				}
-				Console.Write("\n\n");
 			}
+			//foreach(var bot in bots.Where(x=>x.IsAlive)) {
+			//	for (int x = 0; x < Settings.CODE_SIZE; x++) {
+			//		Console.Write($"{bot.Brain.Code[x]}\t ");
+			//		if((x+1) % 8 == 0) {
+			//			Console.Write("\n");
+			//		}
+			//	}
+			//	Console.Write("\n\n");
+			//}
+			//Logger.Instance.Print();
+			//Logger.Instance.logs.Clear();
 		}
 
 		public Bot[] GetWinners() {

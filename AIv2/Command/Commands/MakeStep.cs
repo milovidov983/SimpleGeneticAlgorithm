@@ -11,9 +11,11 @@ namespace AIv2 {
 		}
 
 		public void Execute(Bot bot) {
-			int currentCommandId = bot.Brain.CurrentCommandId;
 			Position botCurrentPosition = bot.Position;
-			var (x, y) = CommandDirectionIds.IdToCoordinate[currentCommandId];
+			int direction = bot.Direction;
+
+			var (x, y) = CommandDirectionIds.IdToCoordinate[direction];
+
 			var newPosition = new Position(
 				x: botCurrentPosition.X + x,
 				y: botCurrentPosition.Y + y);
@@ -28,6 +30,7 @@ namespace AIv2 {
 				bot.Handle(worldObject);
 
 				bot.SetNewPosition(newPosition);
+				bot.Cursor = newPosition;
 			}
 		}
 

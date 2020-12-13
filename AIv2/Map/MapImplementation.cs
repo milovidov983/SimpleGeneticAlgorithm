@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace AIv2 {
 	public class MapImplementation {
-		private readonly Empty empty = new Empty();
-		private readonly BotObject bot = new BotObject();
-		private readonly Food food = new Food();
-		private readonly Poison poison = new Poison();
-		private readonly Wall wall = new Wall();
+		public readonly Empty empty = new Empty();
+		public readonly BotObject bot = new BotObject();
+		public readonly Food food = new Food();
+		public readonly Poison poison = new Poison();
+		public readonly Wall wall = new Wall();
 
 		
 		public WorldObject[,] map 

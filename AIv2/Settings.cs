@@ -7,9 +7,9 @@ namespace AIv2 {
 		public const int WORLD_SIZE = 128;
 		public const int CODE_SIZE = 64;
 		public const int MAX_ACTION_COUNT_PER_STEP = 10;
-		public const int INIT_HEALTH_COUNT = 8;
+		public const int INIT_HEALTH_COUNT = 32;
 		public const int BOT_COUNT = 32;
-		public const int BOT_HEALTH_LIMIT = 16;
+		public const int BOT_HEALTH_LIMIT = 64;
 		public const int WINNER_MAX_COUNT = 8;
 		public const int MAX_COMMAND_ID = CODE_SIZE - 1;
 

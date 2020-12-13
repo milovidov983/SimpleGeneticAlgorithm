@@ -12,23 +12,13 @@ namespace AIv2 {
 		}
 
 		public void Execute(Bot bot) {
-			int currentCommandId = bot.Brain.CurrentCommandId;
-			Position botCurrentPosition = bot.Position;
-			var (x, y) = CommandDirectionIds.IdToCoordinate[currentCommandId - ID_OFFSET];
-			var newPosition = new Position(
-				x: botCurrentPosition.X + x,
-				y: botCurrentPosition.Y + y);
-
-			if (!newPosition.IsValid()) {
+			var cursor = bot.Cursor;
+			if(cursor is null) {
 				return;
 			}
 
-			var worldObject = map.Get(newPosition);
-
-			if(worldObject is Food || worldObject is Poison) {
-				bot.Handle(worldObject);
-				bot.SetNewPosition(newPosition);
-			}
+			var worldObject = map.Get(cursor);
+			bot.Handle(worldObject);
 		}
 
 		public static bool IsFitToCommand(int id) {

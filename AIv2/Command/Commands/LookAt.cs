@@ -15,12 +15,14 @@ namespace AIv2 {
 			int currentCommandId = bot.Brain.CurrentCommandId;
 			Position botCurrentPosition = bot.Position;
 			var (x, y) = CommandDirectionIds.IdToCoordinate[currentCommandId - ID_OFFSET];
-			var newPosition = new Position(
+			
+			
+			var newCursorPosition = new Position(
 				x: botCurrentPosition.X + x,
 				y: botCurrentPosition.Y + y);
-			if (newPosition.IsValid()) {
-				var worldObject = map.Get(newPosition);
-				bot.Handle(worldObject);
+
+			if (newCursorPosition.IsValid()) {
+				bot.Cursor = newCursorPosition;
 			}
 		}
 
