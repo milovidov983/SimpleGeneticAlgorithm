@@ -9,7 +9,7 @@ namespace AIv2 {
 
 
 	public class AiApplication {
-		private const int LOOP_COUNT = 10000;
+		private const int LOOP_COUNT = 2000;
 
 		public List<Statistics> statistics = new List<Statistics>();
 
@@ -36,7 +36,7 @@ namespace AIv2 {
 				executionContext.Run();
 				
 				winners = executionContext.GetWinners();
-				if (counter % 500 == 0) {
+				if (counter % 250 == 0) {
 					sw.Stop();
 
 					Console.WriteLine($"{LOOP_COUNT}/{LOOP_COUNT - counter} iterations...");

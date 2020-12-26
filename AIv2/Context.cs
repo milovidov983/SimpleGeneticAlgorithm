@@ -29,10 +29,9 @@ namespace AIv2 {
 						break;
 					}
 				}
-				if(bots.Where(x=> x.IsAlive).Count() < 16) {
-					map.AddObjects(map.food, 64);
-					map.AddObjects(map.poison, 32);
-				}
+				
+				map.AddObjects(map.food, 16);
+				map.AddObjects(map.poison, 16);
 			}
 			//foreach(var bot in bots.Where(x=>x.IsAlive)) {
 			//	for (int x = 0; x < Settings.CODE_SIZE; x++) {
