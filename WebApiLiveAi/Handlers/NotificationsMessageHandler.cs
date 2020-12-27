@@ -14,5 +14,13 @@ namespace WebApiLiveAi.Handlers {
         public override Task ReceiveAsync(WebSocket socket, WebSocketReceiveResult result, byte[] buffer) {
             throw new NotImplementedException();
         }
+
+        public override Task OnConnected(WebSocket socket) {
+            base.OnConnected(socket);
+
+            
+
+            return Task.CompletedTask;
+		}
     }
 }
