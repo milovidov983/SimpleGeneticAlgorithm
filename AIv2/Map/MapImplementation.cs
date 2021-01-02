@@ -83,13 +83,13 @@ namespace AIv2 {
 			return map[position.X, position.Y];
 		}
 
-		public void ClearCell(Position position) {
+		public void ClearCell(Guid id, Position position) {
 			map[position.X, position.Y] = empty;
 		}
 
-		private void MoveElement(Position from, Position to) {
+		private void MoveElement(Guid id, Position from, Position to) {
 			map[to.X, to.Y] = map[from.X, from.Y];
-			ClearCell(from);
+			ClearCell(id, from);
 		}
 	}
 }

@@ -21,7 +21,7 @@ namespace AIv2 {
 			while (LOOP_COUNT > counter++) {
 				var map = new MapImplementation();
 				map.CreateAndFillWorldObjects();
-				map.Add(EventController.Instance);
+				map.Add(StaticEventController.Instance);
 
 				var commandFactory = new CommandFactory(map);
 			

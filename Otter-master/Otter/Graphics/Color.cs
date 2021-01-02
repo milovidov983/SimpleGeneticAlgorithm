@@ -640,7 +640,7 @@ namespace Otter.Graphics
             ByteA = copy.A;
         }
 
-        internal SFML.Graphics.Color SFMLColor
+        public SFML.Graphics.Color SFMLColor
         {
             get { return new SFML.Graphics.Color(ByteR, ByteG, ByteB, ByteA); }
         }

@@ -13,10 +13,12 @@ namespace AIv2 {
 			this.bots = bots;
 	
 		}
-	
+
+		 
+
 		public void Run() {
 			int botCount = default;
-			while (isRunning) {
+			if(isRunning) {
 				var b = bots.FirstOrDefault(x=>x.Generation > 5);
 				if(b != null) {
 					b.EnableLog();

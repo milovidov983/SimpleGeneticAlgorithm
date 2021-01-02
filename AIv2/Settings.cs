@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AIv2 {
 	public class Settings {
-		public const int WORLD_SIZE = 128;
+		public const int WORLD_SIZE = 64;
 		public const int CODE_SIZE = 64;
 		public const int MAX_ACTION_COUNT_PER_STEP = 10;
 		public const int INIT_HEALTH_COUNT = 32;

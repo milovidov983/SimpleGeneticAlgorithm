@@ -6,8 +6,13 @@ namespace AIv2 {
 		private int healthScore;
 		private Position position;
 		private Position cursor;
-		private readonly EventController eventController = EventController.Instance;
+		private readonly StaticEventController eventController = StaticEventController.Instance;
 		private readonly CommandFactory commandFactory;
+
+
+		public void AddSub(IBotEventObserver botEventObserver) {
+			eventController.AddSub(Id, botEventObserver);
+		}
 
 		public readonly Guid Id = Guid.NewGuid();
 		public Brain Brain { get; private set; }
@@ -20,7 +25,7 @@ namespace AIv2 {
 					healthScore = value;
 				}
 				if (healthScore <= 0) {
-					eventController.EndOfHealth(Position);
+					eventController.EndOfHealth(Id,Position);
 				}
 			}
 		}
@@ -30,6 +35,7 @@ namespace AIv2 {
 			set {
 				if (value != null && position != null) {
 					eventController.PositionChanged(
+						id: Id,
 						newPosition: value,
 						oldPosition: position);
 				}
@@ -51,6 +57,8 @@ namespace AIv2 {
 			this.Brain = brain;
 			this.commandFactory = commandFactory;
 			HealthScore = Settings.INIT_HEALTH_COUNT;
+
+			eventController.AddSubject(Id);
 		}
 
 		public void SetNewPosition(Position newPosition) {
