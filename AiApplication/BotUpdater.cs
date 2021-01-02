@@ -23,7 +23,7 @@ namespace AiApplication {
 
 		public override void Update() {
 			base.Update();
-			context.Run();
+			//context.Run();
 		}
 
 

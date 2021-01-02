@@ -3,6 +3,7 @@ using AIv2;
 using Otter.Core;
 using Otter.Graphics;
 using Otter.Graphics.Drawables;
+using System.Threading.Tasks;
 
 namespace AiApplication {
 	public static class Settings {
@@ -15,7 +16,7 @@ namespace AiApplication {
 
 	class Program {
 
-        static void Main(string[] args) {
+        static async Task Main(string[] args) {
             // Create a Game
             var game = new Game("Input Example", Settings.WIDTH, Settings.HEIGHT);
 
@@ -31,6 +32,11 @@ namespace AiApplication {
             scene.AddGraphic(grid);
             scene.Add(presenter);
 
+            Task.Run(async () => {
+                await Task.Delay(1000);
+                context.Run();
+            
+            });
             // Start the game using the created Scene.
             game.Start(scene);
         }

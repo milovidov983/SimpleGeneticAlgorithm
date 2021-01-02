@@ -14,11 +14,12 @@ namespace AIv2 {
 	
 		}
 
-		 
 
-		public void Run() {
+
+		public async Task Run() {
+
 			int botCount = default;
-			if(isRunning) {
+			while(isRunning) {
 				var b = bots.FirstOrDefault(x=>x.Generation > 5);
 				if(b != null) {
 					b.EnableLog();
@@ -30,10 +31,10 @@ namespace AIv2 {
 						isRunning = false;
 						break;
 					}
+					await Task.Delay(200);
 				}
-				
-				map.AddObjects(map.food, 16);
-				map.AddObjects(map.poison, 16);
+				//map.AddObjects(map.food, 16);
+				//map.AddObjects(map.poison, 16);
 			}
 			//foreach(var bot in bots.Where(x=>x.IsAlive)) {
 			//	for (int x = 0; x < Settings.CODE_SIZE; x++) {
