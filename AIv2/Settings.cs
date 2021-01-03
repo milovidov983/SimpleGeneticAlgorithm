@@ -4,20 +4,20 @@ using System.Text;
 
 namespace AIv2 {
 	public class Settings {
-		public const int WORLD_SIZE = 64;
+		public const int WORLD_SIZE = 128;
 		public const int CODE_SIZE = 64;
 		public const int MAX_ACTION_COUNT_PER_STEP = 10;
-		public const int INIT_HEALTH_COUNT = 32;
+		public const int INIT_HEALTH_COUNT = 16;
 		public const int BOT_COUNT = 32;
-		public const int BOT_HEALTH_LIMIT = 64;
+		public const int BOT_HEALTH_LIMIT = 32;
 		public const int WINNER_MAX_COUNT = 8;
 		public const int MAX_COMMAND_ID = CODE_SIZE - 1;
 
 		/// <summary>
 		/// Кол-во итераций перед добавлением объектов
 		/// </summary>
-		public const int ADD_OBJ_PER_ITERATIONS = 10;
-		public const int ADD_OBJECT_COUNT = 8;
+		public const int ADD_OBJ_PER_ITERATIONS = 2;
+		public const int ADD_OBJECT_COUNT = 2;
 	}
 
 	public static class CommandDirectionIds {

@@ -1,12 +1,5 @@
-﻿
-using AiApplication.Models;
-using AiLib.Presentor;
-using AIv2;
+﻿using AIv2;
 using Otter.Core;
-using Otter.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 
 namespace AiApplication {

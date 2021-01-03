@@ -21,7 +21,7 @@ namespace AIv2 {
 			get => generation;
 			set {
 				generation = value;
-				SetGeneration.Invoke(value);
+				SetGeneration?.Invoke(value);
 			} 
 		}
 		public int GenomeCount { get; set; } = 1;
@@ -72,7 +72,7 @@ namespace AIv2 {
 		}
 
 
-		private WorldObjectHandleStratagy currentHandleStratagy;
+		private BotHandleStratagy currentHandleStratagy;
 		private bool logEnabled;
 		
 
@@ -140,7 +140,7 @@ namespace AIv2 {
 			SetGeneration += botEventObserver.UpGeneration;
 
 			EndOfHealthEvent += (Guid id, Position position) => {
-				PositionChangedEvent -= botEventObserver.SetMove;
+				//PositionChangedEvent -= botEventObserver.SetMove;
 				EndOfHealthEvent -= botEventObserver.SetDead;
 				SetGeneration -= botEventObserver.UpGeneration;
 			};

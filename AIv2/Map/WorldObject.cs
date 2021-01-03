@@ -26,7 +26,7 @@ namespace AIv2 {
 		}
 
 		public void SetDead(Position position) {
-			DeadEvent.Invoke(Id, position);
+			DeadEvent?.Invoke(Id, position);
 		}
 
 		public void InitPosition(int x, int y) {

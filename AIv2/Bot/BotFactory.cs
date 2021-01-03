@@ -11,7 +11,7 @@ namespace AIv2 {
 		}
 
 		public Bot[] CreateBots(Bot[] bots = null) =>
-			 bots is null
+			 bots?.Any() != true
 				? InitRandom()
 				: InitFromExistingGenome(bots);
 		

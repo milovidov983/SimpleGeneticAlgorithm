@@ -23,19 +23,19 @@ namespace AIv2 {
 			int botCount = default;
 			
 			for(int i = 0; isRunning; i++) {
-				var b = bots.FirstOrDefault(x=>x.Generation > 5);
-				if(b != null) {
-					b.EnableLog();
-				}
+				//var b = bots.FirstOrDefault(x=>x.Generation > 5);
+				//if(b != null) {
+				//	b.EnableLog();
+				//}
 				foreach(var bot in bots) {
 					bot.Execute();
-					botCount = bots.Count(x => x.IsAlive);
-					if(botCount <= Settings.WINNER_MAX_COUNT) {
-						isRunning = false;
-						break;
-					}
 				}
-				if (i % 10 == 0) {
+				botCount = bots.Count(x => x.IsAlive);
+				if(botCount <= Settings.WINNER_MAX_COUNT) {
+					isRunning = false;
+					break;
+				}
+				if (i % 100 == 0) {
 					map.AddObjects(new WorldObjectFactory(map.food), 8);
 					map.AddObjects(new WorldObjectFactory(map.poison), 8);
 				}

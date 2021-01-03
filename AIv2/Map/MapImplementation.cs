@@ -62,7 +62,7 @@ namespace AIv2 {
 
 					item.AddSubscription(this);
 
-					AddedToMapEvent.Invoke(item);
+					AddedToMapEvent?.Invoke(item);
 				}
 			}
 		}
@@ -83,7 +83,7 @@ namespace AIv2 {
 
 					item.AddSububscriptions(this);
 
-					AddedToMapEvent.Invoke(item);
+					AddedToMapEvent?.Invoke(item);
 				}
 			}
 		}
