@@ -1,11 +1,40 @@
-﻿using System;
+﻿using AiLib.Shared;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace AIv2 {
-	public abstract class WorldObject {
+	public abstract class WorldObject : IItem {
+		public Guid Id { get; protected set; } = Guid.NewGuid();
+		public Position Position { get; protected set; }
+
+		private CommonEvent DeadEvent;
+
+		private List<IWorldObjectsEventObserver> observers = new List<IWorldObjectsEventObserver>();
+
+		protected WorldObject() {
+			DeadEvent += Unsubscribe;
+			
+		}
+		public void AddSubscription(IWorldObjectsEventObserver observer) {
+			DeadEvent += observer.SetDead;
+			observers.Add(observer);
+		}
+		private void Unsubscribe(Guid id, Position position) {
+			observers.ForEach(x => DeadEvent -= x.SetDead);
+			DeadEvent -= Unsubscribe;
+		}
+
+		public void SetDead(Position position) {
+			DeadEvent.Invoke(Id, position);
+		}
+
+		public void InitPosition(int x, int y) {
+			Position = new Position(x, y);
+		}
 	}
 	public class BotObject : WorldObject {
+		public BotObject(Guid id, Position position) { Id = id; Position = position; }
 		public override string ToString() {
 			return $"B";
 		}

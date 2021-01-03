@@ -1,32 +1,29 @@
-﻿using System;
+﻿using AiLib.Shared;
+using System;
 
 namespace AIv2 {
-	public class Bot {
+	public class Bot : IItem {
 		private int actionCounter;
 		private int healthScore;
 		private Position position;
 		private Position cursor;
-		
+		private int generation = 1;
+
 		private readonly CommandFactory commandFactory;
 
 		public event ChangePosition PositionChangedEvent;
-		public event StopExecution StepFinished;
 		public event CommonEvent EndOfHealthEvent;
-
-
-		public void AddSub(IBotEventObserver botEventObserver) {
-			EndOfHealthEvent += botEventObserver.SetDead;
-			PositionChangedEvent += botEventObserver.SetMove;
-
-			EndOfHealthEvent += (Guid id, Position position) => {
-				PositionChangedEvent -= botEventObserver.SetMove;
-				EndOfHealthEvent -= botEventObserver.SetDead;
-			};
-		}
+		public event SetGeneration SetGeneration;
 
 		public readonly Guid Id = Guid.NewGuid();
 		public Brain Brain { get; private set; }
-		public int Generation { get; set; }
+		public int Generation {
+			get => generation;
+			set {
+				generation = value;
+				SetGeneration.Invoke(value);
+			} 
+		}
 		public int GenomeCount { get; set; } = 1;
 		public int HealthScore {
 			get => healthScore;
@@ -35,12 +32,12 @@ namespace AIv2 {
 					healthScore = value;
 				}
 				if (healthScore <= 0) {
-					EndOfHealthEvent.Invoke(Id,Position);
+					EndOfHealthEvent.Invoke(Id, Position);
 				}
 			}
 		}
 		public bool IsAlive { get => HealthScore > 0; }
-		public Position Position { 
+		public Position Position {
 			get => position;
 			set {
 				if (value != null && position != null) {
@@ -53,7 +50,6 @@ namespace AIv2 {
 				position = value;
 			}
 		}
-
 		public Position Cursor {
 			get => cursor;
 			set => cursor = value;
@@ -78,6 +74,7 @@ namespace AIv2 {
 
 		private WorldObjectHandleStratagy currentHandleStratagy;
 		private bool logEnabled;
+		
 
 		public void Handle(WorldObject worldObject) {
 			currentHandleStratagy.Handle(worldObject, this);
@@ -135,6 +132,18 @@ namespace AIv2 {
 
 		public void EnableLog() {
 			this.logEnabled = true;
+		}
+
+		public void AddSububscriptions(IBotEventObserver botEventObserver) {
+			EndOfHealthEvent += botEventObserver.SetDead;
+			PositionChangedEvent += botEventObserver.SetMove;
+			SetGeneration += botEventObserver.UpGeneration;
+
+			EndOfHealthEvent += (Guid id, Position position) => {
+				PositionChangedEvent -= botEventObserver.SetMove;
+				EndOfHealthEvent -= botEventObserver.SetDead;
+				SetGeneration -= botEventObserver.UpGeneration;
+			};
 		}
 
 	}

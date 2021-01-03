@@ -1,16 +1,18 @@
-﻿using System;
+﻿using AiLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AIv2 {
-	public class MapImplementation {
+	public class MapImplementation : IBotEventObserver {
 		public readonly Empty empty = new Empty();
-		public readonly BotObject bot = new BotObject();
+
 		public readonly Food food = new Food();
 		public readonly Poison poison = new Poison();
 		public readonly Wall wall = new Wall();
 
-		
+		public ItemAddedToMap AddedToMapEvent;
+
 		public WorldObject[,] map 
 			= new WorldObject[Settings.WORLD_SIZE, Settings.WORLD_SIZE];
 
@@ -38,21 +40,29 @@ namespace AIv2 {
 				}
 			}
 
-			AddObjects(food);
-			AddObjects(poison);
+			AddObjects(new WorldObjectFactory(food), 16);
+			AddObjects(new WorldObjectFactory(poison), 16);
 			//AddObjects(wall, 128);
 			
 		}
 
-
-		public void AddObjects(WorldObject type, int count = Settings.WORLD_SIZE) {
+		public void AddObjects(WorldObjectFactory factory, int count = Settings.WORLD_SIZE) {
 			var generator = new Generator();
 			var counter = 0;
 			while (counter++ < count) {
 				var x = generator.Get();
 				var y = generator.Get();
-				if(map[x,y] is Empty) {
-					map[x, y] = type;
+
+				var currentObject = map[x, y];
+
+				if (currentObject is Empty) {
+					var item = factory.Create();
+					item.InitPosition(x, y);
+					map[x, y] = item;
+
+					item.AddSubscription(this);
+
+					AddedToMapEvent.Invoke(item);
 				}
 			}
 		}
@@ -67,29 +77,36 @@ namespace AIv2 {
 				var currentObject = map[x, y];
 
 				if(currentObject is Empty) {
-					map[x, y] = this.bot;
-					var bot = botsStack.Pop();
-					bot.InitPosition(x, y);
+					var item = botsStack.Pop();
+					item.InitPosition(x, y);
+					map[x, y] = new BotObject(item.Id, item.Position);
+
+					item.AddSububscriptions(this);
+
+					AddedToMapEvent.Invoke(item);
 				}
 			}
-		}
-
-		public void Add(IWorldObjectEvents worldObjectEvents) {
-			worldObjectEvents.PositionChangedEvent += MoveElement;
-			worldObjectEvents.EndOfHealthEvent += ClearCell;
 		}
 
 		public WorldObject Get(Position position) {
 			return map[position.X, position.Y];
 		}
 
-		public void ClearCell(Guid id, Position position) {
-			map[position.X, position.Y] = empty;
+
+		public void SetDead(Guid id, Position position) {
+			var curent = map[position.X, position.Y];// = empty;
+			if(curent.Id == id) {
+				map[position.X, position.Y] = empty;
+			}
 		}
 
-		private void MoveElement(Guid id, Position from, Position to) {
+		public void SetMove(Guid id, Position from, Position to) {
 			map[to.X, to.Y] = map[from.X, from.Y];
-			ClearCell(id, from);
+			SetDead(id, from);
+		}
+
+		public void UpGeneration(int gen) {
+			//donothing
 		}
 	}
 }

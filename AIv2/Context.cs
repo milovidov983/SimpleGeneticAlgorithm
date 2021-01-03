@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AiLib;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@ namespace AIv2 {
 
 		public Context(MapImplementation map, Bot[] bots) {
 			this.map = map;
+
 			this.bots = bots;
 	
 		}
@@ -19,7 +21,8 @@ namespace AIv2 {
 		public async Task Run() {
 
 			int botCount = default;
-			while(isRunning) {
+			
+			for(int i = 0; isRunning; i++) {
 				var b = bots.FirstOrDefault(x=>x.Generation > 5);
 				if(b != null) {
 					b.EnableLog();
@@ -31,22 +34,13 @@ namespace AIv2 {
 						isRunning = false;
 						break;
 					}
-					await Task.Delay(200);
+					await Task.Delay(1);
 				}
-				//map.AddObjects(map.food, 16);
-				//map.AddObjects(map.poison, 16);
+				if (i % 10 == 0) {
+					map.AddObjects(new WorldObjectFactory(map.food), 16);
+					map.AddObjects(new WorldObjectFactory(map.poison), 16);
+				}
 			}
-			//foreach(var bot in bots.Where(x=>x.IsAlive)) {
-			//	for (int x = 0; x < Settings.CODE_SIZE; x++) {
-			//		Console.Write($"{bot.Brain.Code[x]}\t ");
-			//		if((x+1) % 8 == 0) {
-			//			Console.Write("\n");
-			//		}
-			//	}
-			//	Console.Write("\n\n");
-			//}
-			//Logger.Instance.Print();
-			//Logger.Instance.logs.Clear();
 		}
 
 		public Bot[] GetWinners() {

@@ -12,9 +12,11 @@ namespace AIv2 {
 			switch (worldObject) {
 				case Food _:
 					bot.HealthScore += 5;
+					worldObject.SetDead(bot.Position);
 					break;
 				case Poison _:
 					bot.HealthScore -= 5;
+					worldObject.SetDead(bot.Position);
 					break;
 				case Wall _:
 				case BotObject _:
@@ -31,9 +33,11 @@ namespace AIv2 {
 			switch (worldObject) {
 				case Food _:
 					bot.HealthScore += 5;
+					worldObject.SetDead(bot.Cursor);
 					break;
 				case Poison _:
 					bot.HealthScore += GetProbability() ? 5 : 0;
+					worldObject.SetDead(bot.Cursor);
 					break;
 				case Wall _:
 				case BotObject _:

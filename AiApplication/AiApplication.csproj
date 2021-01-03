@@ -11,6 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Appccelerate.StateMachine" Version="5.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AIv2\AiLib.csproj" />
     <ProjectReference Include="..\Otter-master\Otter\Otter.csproj" />
   </ItemGroup>

@@ -28,6 +28,8 @@ namespace AiLib.Presentor {
 			PositionY = to.Y;
 		}
 
-		
+		public void UpGeneration(int gen) {
+			throw new NotImplementedException();
+		}
 	}
 }

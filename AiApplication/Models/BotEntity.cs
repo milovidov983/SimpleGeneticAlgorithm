@@ -7,28 +7,12 @@ using Otter.Graphics.Drawables;
 using System;
 
 namespace AiApplication {
-	public class PlayerEntity : Entity, IBotEventObserver {
-
-		/// <summary>
-		/// The current move speed of the Entity.
-		/// </summary>
-		public float MoveSpeed;
+	public class BotEntity : Entity, IBotEventObserver {
 		private Image image;
 
-		/// <summary>
-		/// The move speed for when the Entity is moving slowly.
-		/// </summary>
-		public const float MoveSpeedSlow = 5;
-		/// <summary>
-		/// The move speed for when the Entity is moving quickly.
-		/// </summary>
-		public const float MoveSpeedFast = 10;
-
-		public PlayerEntity(float x, float y, Color color) : base(x, y) {
+		public BotEntity(float x, float y) : base(x, y) {
 			Create();
-			Graphic.Color = color;
-			// Assign the initial move speed to be the slow speed.
-			MoveSpeed = MoveSpeedSlow;
+			Graphic.Color = Color.Blue;
 		}
 
 		private void Create() {
@@ -42,8 +26,6 @@ namespace AiApplication {
 
 		public override void Update() {
 			base.Update();
-			
-
 		}
 
 		public void SetDead(Guid id, Position position) {
@@ -56,7 +38,24 @@ namespace AiApplication {
 			Y = YsceneCoordinatePx;
 		}
 
+		public void UpGeneration(int generation) {
+			Graphic.Color = GetColor(generation);
+		}
 
+		private Color GetColor(int generation) {
+			Color red = Color.Red;
+			var r = (red.G + generation) % 255;
+			red.SetColor(r, red.G, red.B);
+			return red;
+		}
+
+		public void InitColor(int generation) {
+			if(generation < 2) {
+				return;
+			}
+			Graphic.Color = GetColor(generation);
+
+		}
 	}
 }
 
