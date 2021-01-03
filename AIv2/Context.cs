@@ -18,7 +18,7 @@ namespace AIv2 {
 
 
 
-		public async Task Run() {
+		public void Run() {
 
 			int botCount = default;
 			
@@ -34,11 +34,10 @@ namespace AIv2 {
 						isRunning = false;
 						break;
 					}
-					await Task.Delay(1);
 				}
 				if (i % 10 == 0) {
-					map.AddObjects(new WorldObjectFactory(map.food), 16);
-					map.AddObjects(new WorldObjectFactory(map.poison), 16);
+					map.AddObjects(new WorldObjectFactory(map.food), 8);
+					map.AddObjects(new WorldObjectFactory(map.poison), 8);
 				}
 			}
 		}

@@ -2,11 +2,7 @@
 using AIv2;
 using Appccelerate.StateMachine;
 using Appccelerate.StateMachine.AsyncMachine;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AiApplication {
 	public class SimpleStateMachine {

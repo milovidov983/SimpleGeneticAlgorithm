@@ -10,32 +10,31 @@ using System.Linq;
 
 
 namespace AiApplication {
-
-
 	public class BotUpdater : Entity {
-		private const int LOOP_COUNT = 2000;
 		private readonly Scene scene;
-		private int counter;
 		private Bot[] winners = null;
+		private SimpleStateMachine context;
+		private UnitController unitController;
+
+		private bool IsIterationComplete { get { return context?.HasWinner == true; } }
+		private bool IsNeedToStartInitialization { get { return context?.IsRunning is null || context?.IsRunning == false; } }
 
 		public BotUpdater(Scene scene) {
 			this.scene = scene;
-			this.counter = 0;
 		}
 
-		private SimpleStateMachine context;
-		private UnitController unitController;
 		public override void Update() {
 			base.Update();
 
-			if (context?.HasWinner == true) {
+			if (IsIterationComplete) {
 				winners = context.GetWinners();
 				IncrementGeneration(winners);
 				ResetStates(winners);
 
 				unitController.ClearEntities();
 			}
-			if (context?.IsRunning is null || context?.IsRunning == false && LOOP_COUNT > counter++) {
+
+			if (IsNeedToStartInitialization) {
 				var map = new MapImplementation();
 				unitController = new UnitController(scene, map);
 				map.CreateAndFillWorldObjects();
@@ -51,7 +50,7 @@ namespace AiApplication {
 			} else {
 				context?.ExecuteBotStep();
 			}
-
+			
 		}
 
 		private void ResetStates(Bot[] winners) {

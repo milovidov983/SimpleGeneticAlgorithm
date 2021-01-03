@@ -9,18 +9,16 @@ using System;
 namespace AiApplication {
 	public class BotEntity : Entity, IBotEventObserver {
 		private Image image;
+		private readonly Color DEFAULT_COLOR = Color.Blue;
 
 		public BotEntity(float x, float y) : base(x, y) {
 			Create();
-			Graphic.Color = Color.Blue;
+			Graphic.Color = DEFAULT_COLOR;
 		}
 
 		private void Create() {
-			// Create a rectangle image.
-			image = Image.CreateRectangle(Settings.BOT_SIZE);
-			// Add the rectangle graphic to the Entity.
+			image = Image.CreateRectangle(ViewSettings.BOT_SIZE);
 			AddGraphic(image);
-			// Center the image's origin.
 			image.CenterOrigin();
 		}
 
@@ -51,7 +49,7 @@ namespace AiApplication {
 
 		public void InitColor(int generation) {
 			if(generation < 2) {
-				return;
+				Graphic.Color = DEFAULT_COLOR;
 			}
 			Graphic.Color = GetColor(generation);
 

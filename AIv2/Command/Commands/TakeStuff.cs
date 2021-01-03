@@ -25,9 +25,9 @@ namespace AIv2 {
 			return 0 + ID_OFFSET <= id && id <= 7 + ID_OFFSET;
 		}
 
-		private static readonly WorldObjectHandleStratagy handleStratagy
+		private static readonly BotHandleStratagy handleStratagy
 			= new TakeStuffBotHandleWorldObjectStratagy();
-		public WorldObjectHandleStratagy CreateHandleStratagy() {
+		public BotHandleStratagy CreateHandleStratagy() {
 			return handleStratagy;
 		}
 

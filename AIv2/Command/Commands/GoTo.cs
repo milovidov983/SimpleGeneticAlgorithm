@@ -20,9 +20,9 @@ namespace AIv2 {
 			return 0 + ID_OFFSET <= id && id <= MAX_COMMAND_ID;
 		}
 
-		private static readonly WorldObjectHandleStratagy handleStratagy
+		private static readonly BotHandleStratagy handleStratagy
 			= new GoToHandleWorldObjectStratagy();
-		public WorldObjectHandleStratagy CreateHandleStratagy() {
+		public BotHandleStratagy CreateHandleStratagy() {
 			return handleStratagy;
 		}
 	}

@@ -13,7 +13,11 @@ namespace AIv2 {
 		public const int WINNER_MAX_COUNT = 8;
 		public const int MAX_COMMAND_ID = CODE_SIZE - 1;
 
-
+		/// <summary>
+		/// Кол-во итераций перед добавлением объектов
+		/// </summary>
+		public const int ADD_OBJ_PER_ITERATIONS = 10;
+		public const int ADD_OBJECT_COUNT = 8;
 	}
 
 	public static class CommandDirectionIds {

@@ -48,9 +48,9 @@ namespace AIv2 {
 			return 0 <= id && id <= 7;
 		}
 
-		private static readonly WorldObjectHandleStratagy handleStratagy 
+		private static readonly BotHandleStratagy handleStratagy 
 			= new MakeStepBotHandleWorldObjectStratagy();
-		public WorldObjectHandleStratagy CreateHandleStratagy() {
+		public BotHandleStratagy CreateHandleStratagy() {
 			return handleStratagy;
 		}
 	}

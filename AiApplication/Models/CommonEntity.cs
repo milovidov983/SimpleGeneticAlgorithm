@@ -19,7 +19,7 @@ namespace AiApplication.Models {
 
 		private void Create() {
 			// Create a rectangle image.
-			image = Image.CreateRectangle(Settings.BOT_SIZE);
+			image = Image.CreateRectangle(ViewSettings.BOT_SIZE);
 			// Add the rectangle graphic to the Entity.
 			AddGraphic(image);
 			// Center the image's origin.
@@ -37,7 +37,7 @@ namespace AiApplication.Models {
 				Poison _ => Color.Black,
 				_ => Color.Grey
 			};
-			Graphic.Color.ByteA = 64;
+			Graphic.Color.ByteA = 32;
 		}
 
 		public void SetDead(Guid id, Position position) {
