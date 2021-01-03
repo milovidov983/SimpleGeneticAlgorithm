@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 
 namespace AIv2 {
 
 
 	public class AiApplication {
-		private const int LOOP_COUNT = 2000;
+		private const int LOOP_COUNT = 25000;
+		private int maxGeneration = 0;
 
 		public List<Statistics> statistics = new List<Statistics>();
 
@@ -40,17 +42,21 @@ namespace AIv2 {
 				winners = executionContext.GetWinners();
 				//Console.SetCursorPosition(0, 0);
 				//Console.Write(counter);
-				if (counter % 500 == 0) {
+				if (counter % 1000 == 0) {
 					sw.Stop();
 
 					Console.WriteLine($"{LOOP_COUNT}/{LOOP_COUNT - counter} iterations...");
 					PrintGenerations(winners);
 					Console.WriteLine($"Elapsed time: {sw.Elapsed.ToString(@"hh\:mm\:ss")}");
+					Console.WriteLine($"Max generation is {maxGeneration}");
 					WriteStatisticToStorage(counter.ToString());
 
 					sw.Restart();
 				}
-				
+
+				SaveCode(winners);
+
+
 				statistics.AddRange(bots.Select(x => new Statistics {
 					Generation = x.Generation,
 					Iteration = counter,
@@ -61,6 +67,19 @@ namespace AIv2 {
 				ResetStates(winners);
 			}
 			WriteStatisticToStorage("final");
+		}
+
+		private void SaveCode(Bot[] winners) {
+			if(winners?.Any() != true) {
+				return;
+			}
+
+			var botMaxGen = winners.OrderByDescending(x => x.Generation).First();
+			if(botMaxGen.Generation > maxGeneration) {
+				maxGeneration = botMaxGen.Generation;
+				var code = JsonSerializer.Serialize(botMaxGen.Brain.Code);
+				File.WriteAllText($"code-gen-{botMaxGen.Generation}.json", code);
+			}
 		}
 
 		public void WriteStatisticToStorage(string postfix) {

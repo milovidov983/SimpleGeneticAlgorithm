@@ -19,7 +19,7 @@ namespace AIv2 {
 		public const int ADD_OBJ_PER_ITERATIONS = 4;
 		public const int ADD_OBJECT_COUNT = 16;
 
-		public const int MUTATION_RATE = 16;
+		public const int MUTATION_RATE = 1;
 	}
 
 	public static class CommandDirectionIds {

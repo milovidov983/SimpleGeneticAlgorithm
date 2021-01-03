@@ -26,11 +26,11 @@ namespace AIv2 {
 
 				foreach(var bot in bots) {
 					bot.Execute();
-				}
-				botCount = bots.Count(x => x.IsAlive);
-				if(botCount <= Settings.WINNER_MAX_COUNT) {
-					isRunning = false;
-					break;
+					botCount = bots.Count(x => x.IsAlive);
+					if(botCount <= Settings.WINNER_MAX_COUNT) {
+						isRunning = false;
+						break;
+					}
 				}
 				if (i % Settings.ADD_OBJ_PER_ITERATIONS == 0) {
 					map.AddObjects(new WorldObjectFactory(map.food), Settings.ADD_OBJECT_COUNT);
