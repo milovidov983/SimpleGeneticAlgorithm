@@ -32,12 +32,14 @@ namespace AIv2 {
 				map.Add(bots);
 			
 				var executionContext = new Context(map, bots);
-
+				//var exeCOntextSw = System.Diagnostics.Stopwatch.StartNew();
 				executionContext.Run();
+				//exeCOntextSw.Stop();
+				//Console.WriteLine($"executionContext.Run() - {exeCOntextSw.ElapsedMilliseconds}");
 				
 				winners = executionContext.GetWinners();
-				Console.SetCursorPosition(0, 0);
-				Console.Write(counter);
+				//Console.SetCursorPosition(0, 0);
+				//Console.Write(counter);
 				if (counter % 50 == 0) {
 					sw.Stop();
 
