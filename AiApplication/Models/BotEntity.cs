@@ -42,16 +42,17 @@ namespace AiApplication {
 
 		private Color GetColor(int generation) {
 			Color red = Color.Red;
-			var r = (red.G + generation) % 255;
+			var r = (generation) % 255;
 			red.SetColor(r, red.G, red.B);
 			return red;
 		}
 
 		public void InitColor(int generation) {
-			if(generation < 2) {
+			if (generation < 2) {
 				Graphic.Color = DEFAULT_COLOR;
+			} else {
+				Graphic.Color = GetColor(generation);
 			}
-			Graphic.Color = GetColor(generation);
 
 		}
 	}

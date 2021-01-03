@@ -40,7 +40,7 @@ namespace AIv2 {
 				winners = executionContext.GetWinners();
 				//Console.SetCursorPosition(0, 0);
 				//Console.Write(counter);
-				if (counter % 50 == 0) {
+				if (counter % 500 == 0) {
 					sw.Stop();
 
 					Console.WriteLine($"{LOOP_COUNT}/{LOOP_COUNT - counter} iterations...");

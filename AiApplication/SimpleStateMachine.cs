@@ -2,6 +2,7 @@
 using AIv2;
 using Appccelerate.StateMachine;
 using Appccelerate.StateMachine.AsyncMachine;
+using System;
 using System.Linq;
 
 namespace AiApplication {
@@ -27,6 +28,8 @@ namespace AiApplication {
 		private readonly MapImplementation map;
 		private int objectAddedCounter = 0;
 		private int currentBotIndex = 0;
+		private int totalSteps;
+
 		public bool HasWinner { get; private set; }
 		public bool IsRunning { get; private set; }
 
@@ -96,12 +99,32 @@ namespace AiApplication {
 				currentBotIndex = 0;
 				machine
 					.Fire(Events.BotsDone);
+				totalSteps++;
 			}
 		}
 
 		private void Stop() {
 			IsRunning = false;
 			machine.Stop();
+			PrintGenerations(GetWinners());
+			var logger = Logger.Instance;
+			logger.Print();
+		}
+
+		private void PrintGenerations(Bot[] bots) {
+			var gens = bots
+				.OrderBy(x => x.Generation)
+				.Select(x => $"[ GENERATION: {x.Generation} | GENOME: {x.GenomeCount} | ID: {x.Id} ]\n")
+				.ToArray();
+
+			var genomes = bots
+					.OrderBy(x => x.GenomeCount)
+					.Select(x => x.GenomeCount)
+					.ToArray();
+
+			Console.WriteLine("---------------------------------------------------------------");
+			Console.WriteLine($"Выжившие поколения:\n {string.Join(" ", gens)}\n");
+			Console.WriteLine($"Общее количество ходов: {totalSteps}\n");
 		}
 		private bool CanAddObjects() {
 			return objectAddedCounter++ % Settings.ADD_OBJ_PER_ITERATIONS == 0;

@@ -1,7 +1,10 @@
 ﻿using AiLib.Shared;
 using System;
+using System.Text;
 
 namespace AIv2 {
+	
+
 	public class Bot : IItem {
 		private int actionCounter;
 		private int healthScore;
@@ -10,6 +13,7 @@ namespace AIv2 {
 		private int generation = 1;
 
 		private readonly CommandFactory commandFactory;
+
 
 		public event ChangePosition PositionChangedEvent;
 		public event CommonEvent EndOfHealthEvent;
@@ -28,8 +32,9 @@ namespace AIv2 {
 		public int HealthScore {
 			get => healthScore;
 			set {
-				if (healthScore < Settings.BOT_HEALTH_LIMIT) {
-					healthScore = value;
+				healthScore = value;
+				if (healthScore > Settings.BOT_HEALTH_LIMIT) {
+					healthScore = Settings.BOT_HEALTH_LIMIT;
 				}
 				if (healthScore <= 0) {
 					EndOfHealthEvent.Invoke(Id, Position);
@@ -73,12 +78,15 @@ namespace AIv2 {
 
 
 		private BotHandleStratagy currentHandleStratagy;
-		private bool logEnabled;
+		private bool logEnabled { get => Generation > 7; }
 		
 
 		public void Handle(WorldObject worldObject) {
-			currentHandleStratagy.Handle(worldObject, this);
+			if (IsAlive) {
+				currentHandleStratagy.Handle(worldObject, this);
+			}
 		}
+
 
 		public void Execute() {
 			if (!IsAlive) {
@@ -123,6 +131,7 @@ namespace AIv2 {
 			Position = null;
 			HealthScore = Settings.INIT_HEALTH_COUNT;
 			actionCounter = 0;
+			Unsubscribe();
 		}
 
 		private bool IsFinalCommand(int commandId) {
@@ -130,21 +139,25 @@ namespace AIv2 {
 		}
 
 
-		public void EnableLog() {
-			this.logEnabled = true;
-		}
-
+		private Action Unsubscribe;
 		public void AddSububscriptions(IBotEventObserver botEventObserver) {
 			EndOfHealthEvent += botEventObserver.SetDead;
 			PositionChangedEvent += botEventObserver.SetMove;
 			SetGeneration += botEventObserver.UpGeneration;
 
-			EndOfHealthEvent += (Guid id, Position position) => {
-				//PositionChangedEvent -= botEventObserver.SetMove;
+			this.Unsubscribe = () => {
+				PositionChangedEvent -= botEventObserver.SetMove;
 				EndOfHealthEvent -= botEventObserver.SetDead;
 				SetGeneration -= botEventObserver.UpGeneration;
 			};
+
+			EndOfHealthEvent += (Guid id, Position position) => {
+				Unsubscribe();
+			};
 		}
+
+
+		
 
 	}
 }

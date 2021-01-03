@@ -20,16 +20,18 @@ namespace AIv2 {
 			var botsList = new List<Bot>();
 			var childCount = Settings.BOT_COUNT / parentsBots.Length;
 			foreach (var parentBot in parentsBots) {
-				var childs = Enumerable.Range(0, childCount - 1).Select(x => {
-					var brain = new Brain();
-					brain.Init(parentBot.Brain.Code);
-					var newBot = new Bot(brain, commandFactory);
-					newBot.GenomeCount += parentBot.GenomeCount + 1;
-					return newBot;
-				}).Union(new[] { parentBot }).ToArray();
+				var nextGeneration = (new[] { parentBot })
+					.Union( 
+						Enumerable.Range(0, childCount - 1).Select(x => {
+							var brain = new Brain();
+							brain.Init(parentBot.Brain.Code);
+							var newBot = new Bot(brain, commandFactory);
+							newBot.GenomeCount += parentBot.GenomeCount + 1;
+							return newBot;
+				}));
 
-				MakeMutation(childs.First().Brain.Code);
-				botsList.AddRange(childs);
+				MakeMutation(nextGeneration.First().Brain.Code);
+				botsList.AddRange(nextGeneration);
 			}
 
 			return botsList.ToArray();

@@ -26,7 +26,7 @@ namespace AIv2 {
 
 			var worldObject = map.Get(newPosition);
 
-			if(IsBotCanMoveTo(worldObject)) {
+			if(IsBotCanMoveTo(worldObject) && bot.IsAlive) {
 				bot.Handle(worldObject);
 
 				bot.SetNewPosition(newPosition);

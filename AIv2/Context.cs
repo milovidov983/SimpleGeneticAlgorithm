@@ -25,12 +25,7 @@ namespace AIv2 {
 			for(int i = 0; isRunning; i++) {
 
 				foreach(var bot in bots) {
-					var exeCOntextSw = System.Diagnostics.Stopwatch.StartNew();
 					bot.Execute();
-					exeCOntextSw.Stop();
-					var elapsed = exeCOntextSw.ElapsedMilliseconds;
-					Console.WriteLine($"bot.Execute() - {elapsed}");
-
 				}
 				botCount = bots.Count(x => x.IsAlive);
 				if(botCount <= Settings.WINNER_MAX_COUNT) {
