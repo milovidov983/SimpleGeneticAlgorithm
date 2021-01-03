@@ -29,6 +29,8 @@ namespace AiApplication {
 		private int objectAddedCounter = 0;
 		private int currentBotIndex = 0;
 		private int totalSteps;
+		private static int totalStepsMax = 0;
+		private static int totalIteration = 0;
 
 		public bool HasWinner { get; private set; }
 		public bool IsRunning { get; private set; }
@@ -100,6 +102,7 @@ namespace AiApplication {
 				machine
 					.Fire(Events.BotsDone);
 				totalSteps++;
+				totalStepsMax = Math.Max(totalStepsMax, totalSteps);
 			}
 		}
 
@@ -108,6 +111,7 @@ namespace AiApplication {
 			machine.Stop();
 			PrintGenerations(GetWinners());
 			var logger = Logger.Instance;
+			totalIteration++;
 			logger.Print();
 		}
 
@@ -124,7 +128,9 @@ namespace AiApplication {
 
 			Console.WriteLine("---------------------------------------------------------------");
 			Console.WriteLine($"Выжившие поколения:\n {string.Join(" ", gens)}\n");
-			Console.WriteLine($"Общее количество ходов: {totalSteps}\n");
+			Console.WriteLine($"Общее количество ходов в текущей итерации: {totalSteps}");
+			Console.WriteLine($"Максимальное количество ходов за итерацию: {totalStepsMax}");
+			Console.WriteLine($"Общее количество итераций: {totalIteration}");
 		}
 		private bool CanAddObjects() {
 			return objectAddedCounter++ % Settings.ADD_OBJ_PER_ITERATIONS == 0;
@@ -146,7 +152,7 @@ namespace AiApplication {
 				.Fire(Events.FoodAdded);
 		}
 		private void AddPoison() {
-			map.AddObjects(new WorldObjectFactory(map.poison), Settings.ADD_OBJECT_COUNT);
+			map.AddObjects(new WorldObjectFactory(map.poison), Settings.ADD_OBJECT_COUNT/2);
 			machine
 				.Fire(Events.PoisonAdded);
 		}

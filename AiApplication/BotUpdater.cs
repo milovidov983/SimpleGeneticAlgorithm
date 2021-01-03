@@ -1,6 +1,7 @@
-﻿using AIv2;
+﻿using AiApplication.Models;
+using AIv2;
 using Otter.Core;
-
+using Otter.Graphics.Drawables;
 
 namespace AiApplication {
 	public class BotUpdater : Entity {
@@ -8,6 +9,7 @@ namespace AiApplication {
 		private Bot[] winners = null;
 		private SimpleStateMachine context;
 		private UnitController unitController;
+	
 
 		private bool IsIterationComplete { get { return context?.HasWinner == true; } }
 		private bool IsNeedToStartInitialization { get { return context?.IsRunning is null || context?.IsRunning == false; } }
@@ -16,6 +18,7 @@ namespace AiApplication {
 			this.scene = scene;
 		}
 
+		
 		public override void Update() {
 			base.Update();
 
@@ -29,6 +32,7 @@ namespace AiApplication {
 
 			if (IsNeedToStartInitialization) {
 				var map = new MapImplementation();
+
 				unitController = new UnitController(scene, map);
 				map.CreateAndFillWorldObjects();
 

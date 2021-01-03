@@ -38,7 +38,9 @@ namespace AIv2 {
 			foreach(var item in logs) {
 				Console.WriteLine(item);
 			}
-			Console.WriteLine($"total elements: {logs.Count}");
+			if (logs.Count > 0) {
+				Console.WriteLine($"total elements: {logs.Count}");
+			}
 		}
 	}
 

@@ -19,6 +19,7 @@ namespace AiLib {
 			return type switch {
 				Food _ => new Food(),
 				Poison _ => new Poison(),
+				Wall _ => new Wall(),
 				_ => throw new Exception(nameof(type))
 			};
 

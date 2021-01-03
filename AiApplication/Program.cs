@@ -9,7 +9,7 @@ namespace AiApplication {
 
 	class Program {
         static async Task Main(string[] args) {
-            var game = new Game("Input Example", ViewSettings.WIDTH, ViewSettings.HEIGHT);
+            var game = new Game("Input Example", ViewSettings.WIDTH, ViewSettings.HEIGHT, 512);
             var scene = new Scene(ViewSettings.WIDTH, ViewSettings.HEIGHT);
 
             var grid = new Grid(ViewSettings.WIDTH, ViewSettings.HEIGHT, ViewSettings.BOT_SIZE, ViewSettings.BOT_SIZE, Color.White);

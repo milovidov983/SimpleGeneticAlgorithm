@@ -40,6 +40,8 @@ namespace AIv2 {
 		}
 	}
 	public class Wall : WorldObject {
+		public int Width = 16;
+		public int Height = 16;
 		public override string ToString() {
 			return $"W";
 		}

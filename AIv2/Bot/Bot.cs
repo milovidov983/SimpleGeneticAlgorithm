@@ -78,7 +78,7 @@ namespace AIv2 {
 
 
 		private BotHandleStratagy currentHandleStratagy;
-		private bool logEnabled { get => Generation > 7; }
+		private bool logEnabled;// { get => Generation > 7; }
 		
 
 		public void Handle(WorldObject worldObject) {

@@ -9,7 +9,7 @@ namespace AIv2 {
 
 		public readonly Food food = new Food();
 		public readonly Poison poison = new Poison();
-		public readonly Wall wall = new Wall();
+		
 
 		public ItemAddedToMap AddedToMapEvent;
 
@@ -40,11 +40,32 @@ namespace AIv2 {
 				}
 			}
 
+			AddObjects(new WorldObjectFactory(new Wall()), 16, 16);
 			AddObjects(new WorldObjectFactory(food), 16);
 			AddObjects(new WorldObjectFactory(poison), 16);
-			//AddObjects(wall, 128);
 			
 		}
+
+		public void SetWall(int x1, int y1, int x2, int y2, Wall wall) {
+			for(int x = x1; x < x2; x++) {
+				for (int y = y1; y < y2; y++) {
+					map[x, y] = wall;
+				}
+			}
+		}
+
+		public void AddObjects(WorldObjectFactory factory, int x, int y) {
+			var currentObject = map[x, y];
+
+			if (currentObject is Empty) {
+				var item = factory.Create();
+				item.InitPosition(x, y);
+				Wall w = (Wall)item;
+				SetWall(x, y, x + w.Width, Math.Abs(y - w.Height), w);
+				AddedToMapEvent?.Invoke(item);
+			}
+		}
+
 
 		public void AddObjects(WorldObjectFactory factory, int count = Settings.WORLD_SIZE) {
 			var generator = new Generator();

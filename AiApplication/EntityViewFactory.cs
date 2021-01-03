@@ -26,5 +26,19 @@ namespace AiApplication.Models {
 			item.AddSubscription(entity);
 			return entity;
 		}
+
+		public CommonEntity Create(Wall item) {
+			var convertedCoords = CoordsHelper.GetCoordinateFrom(item.Position.X, item.Position.Y);
+			var entity = new CommonEntity(
+				convertedCoords.XsceneCoordinatePx,
+				convertedCoords.YsceneCoordinatePx,
+				item.Width * ViewSettings.BOT_SIZE,
+				item.Height * ViewSettings.BOT_SIZE);
+
+
+			entity.InitColor(item);
+			
+			return entity;
+		}
 	}
 }

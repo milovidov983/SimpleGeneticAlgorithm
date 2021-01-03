@@ -13,7 +13,7 @@ namespace AiApplication {
 
 		private readonly Scene scene;
 		private List<Entity> all = new List<Entity>();
-		private EntityViewFactory botFactory = EntityViewFactory.Instance;
+		private EntityViewFactory entityFactory = EntityViewFactory.Instance;
 		public UnitController(Scene scene, MapImplementation map) {
 			this.scene = scene;
 
@@ -23,19 +23,25 @@ namespace AiApplication {
 		private void AddEntity(IItem item) {
 			switch (item) {
 				case Bot b:{
-					var entity = botFactory.Create(b);
+					var entity = entityFactory.Create(b);
 					scene.Add(entity);
 					all.Add(entity);
 					break;
 				}
 				case Food f: {
-					var entity = botFactory.Create(f);
+					var entity = entityFactory.Create(f);
 					scene.Add(entity);
 					all.Add(entity);
 					break;
 				}
 				case Poison p: {
-					var entity = botFactory.Create(p);
+					var entity = entityFactory.Create(p);
+					scene.Add(entity);
+					all.Add(entity);
+					break;
+				}
+				case Wall w: {
+					var entity = entityFactory.Create(w);
 					scene.Add(entity);
 					all.Add(entity);
 					break;
@@ -47,6 +53,7 @@ namespace AiApplication {
 
 		public void ClearEntities() {
 			all.ForEach(x => x.RemoveSelf());
+			all.Clear();
 		}
 	}
 }

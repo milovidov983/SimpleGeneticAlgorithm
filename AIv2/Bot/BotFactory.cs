@@ -37,14 +37,17 @@ namespace AIv2 {
 			return botsList.ToArray();
 		}
 
+
 		private void MakeMutation(int[] gencode) {
 			var random = new Random((int)DateTime.Now.Ticks);
-			var swapIndexA = random.Next(0, gencode.Length / 2);
-			var swapIndexB = random.Next(gencode.Length / 2, gencode.Length - 1);
+			for (int i = 0; i < Settings.MUTATION_RATE; i++){
+				var swapIndexA = random.Next(0, gencode.Length / 2);
+				var swapIndexB = random.Next(gencode.Length / 2, gencode.Length - 1);
 
-			var tempValue = gencode[swapIndexA];
-			gencode[swapIndexA] = gencode[swapIndexB];
-			gencode[swapIndexB] = tempValue;
+				var tempValue = gencode[swapIndexA];
+				gencode[swapIndexA] = gencode[swapIndexB];
+				gencode[swapIndexB] = tempValue;
+			}
 		}
 
 		private Bot[] InitRandom() {
