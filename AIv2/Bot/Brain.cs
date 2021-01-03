@@ -29,7 +29,9 @@ namespace AIv2 {
 			Code = inidata.ToArray();
 		}
 
-
+		public void Load(int[] code) {
+			Code = code;
+		}
 
 		public class CommandIndex {
 			private const int MAX_COMMAND_ID = Settings.CODE_SIZE - 1;

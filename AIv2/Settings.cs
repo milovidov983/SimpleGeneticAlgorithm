@@ -6,9 +6,9 @@ namespace AIv2 {
 	public class Settings {
 		public const int WORLD_SIZE = 64;
 		public const int CODE_SIZE = 64;
-		public const int MAX_ACTION_COUNT_PER_STEP = 5;
+		public const int MAX_ACTION_COUNT_PER_STEP = 16;
 		public const int INIT_HEALTH_COUNT = 32;
-		public const int BOT_COUNT = 48;
+		public const int BOT_COUNT = 32;
 		public const int BOT_HEALTH_LIMIT = 64;
 		public const int WINNER_MAX_COUNT = 8;
 		public const int MAX_COMMAND_ID = CODE_SIZE - 1;
@@ -17,9 +17,9 @@ namespace AIv2 {
 		/// Кол-во итераций перед добавлением объектов
 		/// </summary>
 		public const int ADD_OBJ_PER_ITERATIONS = 4;
-		public const int ADD_OBJECT_COUNT = 16;
+		public const int ADD_OBJECT_COUNT = 32;
 
-		public const int MUTATION_RATE = 1;
+		public const int MUTATION_RATE = 8;
 	}
 
 	public static class CommandDirectionIds {

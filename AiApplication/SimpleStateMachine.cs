@@ -114,8 +114,9 @@ namespace AiApplication {
 			totalIteration++;
 			logger.Print();
 		}
-
+		public static int generationMax = 0;
 		private void PrintGenerations(Bot[] bots) {
+			generationMax = Math.Max(generationMax, bots.OrderByDescending(x => x.Generation).First().Generation);
 			var gens = bots
 				.OrderBy(x => x.Generation)
 				.Select(x => $"[ GENERATION: {x.Generation} | GENOME: {x.GenomeCount} | ID: {x.Id} ]\n")
@@ -131,6 +132,7 @@ namespace AiApplication {
 			Console.WriteLine($"Общее количество ходов в текущей итерации: {totalSteps}");
 			Console.WriteLine($"Максимальное количество ходов за итерацию: {totalStepsMax}");
 			Console.WriteLine($"Общее количество итераций: {totalIteration}");
+			Console.WriteLine($"Лучшее поколение за всё время: {generationMax}");
 		}
 		private bool CanAddObjects() {
 			return objectAddedCounter++ % Settings.ADD_OBJ_PER_ITERATIONS == 0;

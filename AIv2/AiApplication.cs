@@ -12,8 +12,10 @@ namespace AIv2 {
 	public class AiApplication {
 		private const int LOOP_COUNT = 25000;
 		private int maxGeneration = 0;
+		private int maxLiveCount = 0;
 
 		public List<Statistics> statistics = new List<Statistics>();
+		
 
 		public void Start() {
 			Bot[] winners = null;
@@ -34,14 +36,12 @@ namespace AIv2 {
 				map.Add(bots);
 			
 				var executionContext = new Context(map, bots);
-				//var exeCOntextSw = System.Diagnostics.Stopwatch.StartNew();
-				executionContext.Run();
-				//exeCOntextSw.Stop();
-				//Console.WriteLine($"executionContext.Run() - {exeCOntextSw.ElapsedMilliseconds}");
-				
+
+				var liveCount = executionContext.Run();
+				maxLiveCount = Math.Max(liveCount, maxLiveCount);
+
 				winners = executionContext.GetWinners();
-				//Console.SetCursorPosition(0, 0);
-				//Console.Write(counter);
+
 				if (counter % 1000 == 0) {
 					sw.Stop();
 
@@ -49,6 +49,7 @@ namespace AIv2 {
 					PrintGenerations(winners);
 					Console.WriteLine($"Elapsed time: {sw.Elapsed.ToString(@"hh\:mm\:ss")}");
 					Console.WriteLine($"Max generation is {maxGeneration}");
+					Console.WriteLine($"Max live count is {maxLiveCount}");
 					WriteStatisticToStorage(counter.ToString());
 
 					sw.Restart();
@@ -69,6 +70,8 @@ namespace AIv2 {
 			WriteStatisticToStorage("final");
 		}
 
+
+		private string prevCodeCopy;
 		private void SaveCode(Bot[] winners) {
 			if(winners?.Any() != true) {
 				return;
@@ -78,7 +81,13 @@ namespace AIv2 {
 			if(botMaxGen.Generation > maxGeneration) {
 				maxGeneration = botMaxGen.Generation;
 				var code = JsonSerializer.Serialize(botMaxGen.Brain.Code);
-				File.WriteAllText($"code-gen-{botMaxGen.Generation}.json", code);
+				if(prevCodeCopy is not null && !prevCodeCopy.Equals(code)) {
+					File.WriteAllText($"code-gen-{botMaxGen.Generation}.json", code);
+					Console.WriteLine($"Source code {botMaxGen.Generation} generation saved..");
+				} else {
+					prevCodeCopy = code;
+				}
+
 			}
 		}
 

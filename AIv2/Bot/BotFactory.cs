@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace AIv2 {
 	public class BotFactory {
@@ -10,9 +11,9 @@ namespace AIv2 {
 			this.commandFactory = commandFactory;
 		}
 
-		public Bot[] CreateBots(Bot[] bots = null) =>
+		public Bot[] CreateBots(Bot[] bots = null, string code = null) =>
 			 bots?.Any() != true
-				? InitRandom()
+				? InitRandom(code)
 				: InitFromExistingGenome(bots);
 		
 
@@ -50,12 +51,17 @@ namespace AIv2 {
 			}
 		}
 
-		private Bot[] InitRandom() {
+		private Bot[] InitRandom(string code) {
+			int[] saved = code is null ? null : JsonSerializer.Deserialize<int[]>(code);
 			return Enumerable.Range(0, Settings.BOT_COUNT).Select(x => {
-				var generator = new Generator(Settings.CODE_SIZE);
-				var genome = Enumerable.Range(0, Settings.CODE_SIZE).Select(x => generator.Get()).ToArray();
 				var brain = new Brain();
-				brain.Init(genome);
+				if (saved is null) {
+					var generator = new Generator(Settings.CODE_SIZE);
+					var genome = Enumerable.Range(0, Settings.CODE_SIZE).Select(x => generator.Get()).ToArray();
+					brain.Init(genome);
+				} else {
+					brain.Load(saved);
+				}
 				return new Bot(brain, commandFactory);
 			}).ToArray();
 		}

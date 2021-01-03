@@ -2,10 +2,12 @@
 using AIv2;
 using Otter.Core;
 using Otter.Graphics.Drawables;
+using System.IO;
 
 namespace AiApplication {
 	public class BotUpdater : Entity {
 		private readonly Scene scene;
+		private readonly string savedCode;
 		private Bot[] winners = null;
 		private SimpleStateMachine context;
 		private UnitController unitController;
@@ -16,6 +18,7 @@ namespace AiApplication {
 
 		public BotUpdater(Scene scene) {
 			this.scene = scene;
+			savedCode = File.ReadAllText("code-gen-17.json");
 		}
 
 		
@@ -38,7 +41,7 @@ namespace AiApplication {
 
 				var commandFactory = new CommandFactory(map);
 				var botFactory = new BotFactory(commandFactory);
-				var bots = botFactory.CreateBots(winners);
+				var bots = botFactory.CreateBots(winners, savedCode);
 
 				map.Add(bots);
 				context = new SimpleStateMachine(bots, map);

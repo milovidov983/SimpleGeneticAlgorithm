@@ -18,8 +18,8 @@ namespace AIv2 {
 
 
 
-		public void Run() {
-
+		public int Run() {
+			int counter = 0;
 			int botCount = default;
 			
 			for(int i = 0; isRunning; i++) {
@@ -36,7 +36,9 @@ namespace AIv2 {
 					map.AddObjects(new WorldObjectFactory(map.food), Settings.ADD_OBJECT_COUNT);
 					map.AddObjects(new WorldObjectFactory(map.poison), Settings.ADD_OBJECT_COUNT);
 				}
+				counter++;
 			}
+			return counter;
 		}
 
 		public Bot[] GetWinners() {
