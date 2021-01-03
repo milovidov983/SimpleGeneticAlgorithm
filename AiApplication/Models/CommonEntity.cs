@@ -23,7 +23,8 @@ namespace AiApplication.Models {
 
 		private void Create() {
 			// Create a rectangle image.
-			image = Image.CreateRectangle(width, height);
+			image = Image.CreateRectangle(ViewSettings.BOT_SIZE);
+			image.Color = Color.Grey;
 			// Add the rectangle graphic to the Entity.
 			AddGraphic(image);
 			// Center the image's origin.

@@ -152,7 +152,7 @@ namespace AiApplication {
 				.Fire(Events.FoodAdded);
 		}
 		private void AddPoison() {
-			map.AddObjects(new WorldObjectFactory(map.poison), Settings.ADD_OBJECT_COUNT/2);
+			map.AddObjects(new WorldObjectFactory(map.poison), Settings.ADD_OBJECT_COUNT);
 			machine
 				.Fire(Events.PoisonAdded);
 		}

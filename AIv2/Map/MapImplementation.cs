@@ -40,30 +40,30 @@ namespace AIv2 {
 				}
 			}
 
-			AddObjects(new WorldObjectFactory(new Wall()), 16, 16);
-			AddObjects(new WorldObjectFactory(food), 16);
-			AddObjects(new WorldObjectFactory(poison), 16);
+			AddObjects( new Wall(), 0, 32);
+			AddObjects(new WorldObjectFactory(food), Settings.ADD_OBJECT_COUNT);
+			AddObjects(new WorldObjectFactory(poison), Settings.ADD_OBJECT_COUNT);
 			
 		}
 
-		public void SetWall(int x1, int y1, int x2, int y2, Wall wall) {
-			for(int x = x1; x < x2; x++) {
-				for (int y = y1; y < y2; y++) {
-					map[x, y] = wall;
+
+		public void AddObjects(Wall wall, int indexX, int indexY) {
+			for (int x = indexX; x < wall.Width - indexX; x++) {
+				for (int y = indexY; y >  indexY - wall.Height; y--) {
+
+					var currentObject = map[x, y];
+
+					if (currentObject is Empty) {
+						wall.InitPosition(x, y);
+						map[x, y] = wall;
+						wall.AddSubscription(this);
+
+						AddedToMapEvent?.Invoke(wall);
+					}
 				}
 			}
-		}
 
-		public void AddObjects(WorldObjectFactory factory, int x, int y) {
-			var currentObject = map[x, y];
 
-			if (currentObject is Empty) {
-				var item = factory.Create();
-				item.InitPosition(x, y);
-				Wall w = (Wall)item;
-				SetWall(x, y, x + w.Width, Math.Abs(y - w.Height), w);
-				AddedToMapEvent?.Invoke(item);
-			}
 		}
 
 
